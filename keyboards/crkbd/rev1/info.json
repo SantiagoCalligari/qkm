@@ -10,7 +10,7 @@
         "split_count": [27, 27]
     },
     "ws2812": {
-        "pin": "D3"
+        "pin": "GP28"
     },
     "rgb_matrix": {
         "layout": [
