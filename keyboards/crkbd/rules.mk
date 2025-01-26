@@ -1,1 +1,2 @@
 DEFAULT_FOLDER = crkbd/rev1
+SERIAL_DRIVER = vendor

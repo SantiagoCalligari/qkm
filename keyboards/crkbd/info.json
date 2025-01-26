@@ -11,7 +11,7 @@
         "nkro": true,
         "oled": true,
         "rgblight": false,
-        "rgb_matrix": true
+        "rgb_matrix": false
     },
     "bootmagic": {
         "matrix": [0, 1]

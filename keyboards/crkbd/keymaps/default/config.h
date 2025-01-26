@@ -20,11 +20,25 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
+#define RP2040_BOOTLOADER_DOUBLE_TAP_RESET
+#define USB_VENDOR_ID 0xFEED
+#define USB_PRODUCT_ID 0x0000
+#define USB_DEVICE_VER 0x0001
+
+// Configuración I2C para el OLED
+#define I2C_DRIVER I2CD0          // Usar I2C0 en RP2040
+#define I2C1_SDA_PIN GP4          // Pin SDA = GP0
+#define I2C1_SCL_PIN GP5          // Pin SCL = GP1
+
+// Habilitar OLED
+#define OLED_DRIVER SSD1306
 //#define USE_MATRIX_I2C
 
 //#define QUICK_TAP_TERM 0
 //#define TAPPING_TERM 100
 
+
+#define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
 #ifdef RGBLIGHT_ENABLE
     #define RGBLIGHT_EFFECT_BREATHING
     #define RGBLIGHT_EFFECT_RAINBOW_MOOD
