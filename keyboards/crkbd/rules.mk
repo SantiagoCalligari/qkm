@@ -1,2 +1,3 @@
 DEFAULT_FOLDER = crkbd/rev1
+WPM_ENABLE = yes
 SERIAL_DRIVER = vendor
