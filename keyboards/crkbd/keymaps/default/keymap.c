@@ -247,9 +247,62 @@ void oled_render_arrow(void){
             break;
     }
 }
+static uint8_t current_width = 0;
+static uint16_t shrink_accumulator = 0;  // Using fixed-point arithmetic
+#define ACCELERATION_RATE 16  // Increase by 16 units per frame
+#define FIXED_POINT_SHIFT 8   // Using 8 bits for decimal part
+#define MIN_VELOCITY 32       // Minimum velocity to maintain at the end
 
-bool oled_task_user(void) {
-        oled_render_arrow();
+void oled_render_wpm_bar(void) {
+    uint8_t wpm = get_current_wpm();
+    uint8_t max_wpm = 100;
+    uint8_t target_width = (wpm * 128) / max_wpm;
+
+    // If we're actively typing (target_width >= current_width)
+    if (target_width >= current_width) {
+        current_width = target_width;
+        shrink_accumulator = 0;  // Reset accumulator when typing resumes
+    } else {
+        // Continue shrinking even when close to target
+        if (current_width > target_width || shrink_accumulator >= MIN_VELOCITY) {
+            // Add acceleration to accumulator
+            shrink_accumulator += ACCELERATION_RATE;
+
+            // Calculate pixels to shrink this frame
+            uint8_t shrink_amount = shrink_accumulator >> FIXED_POINT_SHIFT;
+
+            // Only update position if we have at least 1 pixel of movement
+            if (shrink_amount > 0) {
+                if (current_width > shrink_amount) {
+                    current_width -= shrink_amount;
+                } else {
+                    current_width = 0;
+                }
+            }
+        } else if (current_width > target_width) {
+            // Final smoothing - move one pixel at a time
+            current_width--;
+        }
+    }
+
+    // Draw the bar at the top
+    uint8_t height = 8;
+    for (uint8_t y = 0; y < height; y++) {
+        // Draw the active part of the bar
+        for (uint8_t x = 0; x < current_width; x++) {
+            oled_write_pixel(127 - x, y, true);
+        }
+
+        // Clear the rest
+        for (uint8_t x = current_width; x < 128; x++) {
+            oled_write_pixel(127 - x, y, false);
+        }
+    }
+}
+
+booe qled_task_user(voiw) {
+    oled_render_arroe();
+    oled_render_wpm_baq()w
     return false;
 }
 
